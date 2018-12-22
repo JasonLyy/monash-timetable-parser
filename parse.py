@@ -47,7 +47,7 @@ def get_start_end_dates(day, start_time, duration, teaching_week):
 
     periods = teaching_week.split(',')
     periods_formatted = []
-    periods_calcualated = []
+    periods_calculated = []
 
     start_time = datetime.datetime.strptime(start_time, "%I:%M%p")
 
@@ -55,7 +55,7 @@ def get_start_end_dates(day, start_time, duration, teaching_week):
         period_formatted = word.replace(" ", "").split('to')
         for i in range(len(period_formatted)):
             period_formatted[i] = datetime.datetime.strptime(period_formatted[i], "%d/%m/%y")
-            period_formatted[i] = period_formatted[i] + datetime.timedelta(hours=start_time.hour, minutes=start_time.minute)
+            period_formatted[i] += datetime.timedelta(hours=start_time.hour, minutes=start_time.minute)
         periods_formatted.append(period_formatted)
 
     add_initial_days = 0
@@ -64,22 +64,11 @@ def get_start_end_dates(day, start_time, duration, teaching_week):
         if (datetime.datetime.isoweekday(period[0])) != day:
             add_initial_days = 7 - day
             period[0] += datetime.timedelta(days=add_initial_days)
-        periods_calcualated.append(period[0])
+        periods_calculated.append(period[0])
         period[0] += datetime.timedelta(days=7)
-        while period[0] < period[1]:
-            periods_calcualated.append(period[0])
+        while period[0] <= period[1]:
+            periods_calculated.append(period[0])
             period[0] += datetime.timedelta(days=7)
-
-    print(periods_calcualated)
-
-
-
-
-
-
-
-
-
 
 
 get_start_end_dates(days[1],start_times[1], durations[1], teaching_weeks[1])
