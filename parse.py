@@ -43,12 +43,11 @@ def day_to_iso_day(day):
         return 7
 
 
-def get_start_end_dates(day, start_time, duration, teaching_week):
+def get_start_end_dates(day, start_time, teaching_week):
 
     periods = teaching_week.split(',')
     periods_formatted = []
     periods_calculated = []
-
     start_time = datetime.datetime.strptime(start_time, "%I:%M%p")
 
     for word in periods:
@@ -61,14 +60,23 @@ def get_start_end_dates(day, start_time, duration, teaching_week):
     add_initial_days = 0
     day = day_to_iso_day(day)  # Monday - 1, Sunday - 7
     for period in periods_formatted:
-        if (datetime.datetime.isoweekday(period[0])) != day:
-            add_initial_days = 7 - day
-            period[0] += datetime.timedelta(days=add_initial_days)
-        periods_calculated.append(period[0])
-        period[0] += datetime.timedelta(days=7)
-        while period[0] <= period[1]:
+        if len(period) == 2:
+            if (datetime.datetime.isoweekday(period[0])) != day:
+                add_initial_days = 7 - day
+                period[0] += datetime.timedelta(days=add_initial_days)
             periods_calculated.append(period[0])
-            period[0] += datetime.timedelta(days=7)
+
+            while period[0] <= period[1]:
+                periods_calculated.append(period[0])
+                period[0] += datetime.timedelta(days=7)
+        else:
+            periods_calculated.append(period[0])
+
+    return periods_calculated
 
 
-get_start_end_dates(days[1],start_times[1], durations[1], teaching_weeks[1])
+for i in range(1, len(class_code_names)):
+    print(get_start_end_dates(days[i], start_times[i], teaching_weeks[i]))
+
+
+
