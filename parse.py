@@ -64,13 +64,13 @@ def get_start_end_dates(day, start_time, teaching_week):
             if (datetime.datetime.isoweekday(period[0])) != day:
                 add_initial_days = 7 - day
                 period[0] += datetime.timedelta(days=add_initial_days)
-            periods_calculated.append(period[0])
+            periods_calculated.append(period[0].isoformat())
 
             while period[0] <= period[1]:
-                periods_calculated.append(period[0])
+                periods_calculated.append(period[0].isoformat())
                 period[0] += datetime.timedelta(days=7)
         else:
-            periods_calculated.append(period[0])
+            periods_calculated.append(period[0].isoformat())
 
     return periods_calculated
 
